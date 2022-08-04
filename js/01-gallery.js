@@ -1,4 +1,7 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
-1
+
+const galaryList = document
+  .querySelector(".gallery")
+  .insertAdjacentHTML("beforebegin", `<div class="gallery"></div>`);
 console.log(galleryItems);
