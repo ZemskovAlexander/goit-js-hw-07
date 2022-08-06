@@ -1,12 +1,12 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-const modalTemplate = (img) =>
-  `
-  <div class="modal">
-    <img src=${img}>
-    </div>
-  `;
+// const modalTemplate = (img) =>
+//   `
+//   <div class="modal">
+//     <img src=${img}>
+//     </div>
+//   `;
 
 const galleryContainer = document.querySelector(".gallery");
 const cardsMarkup = createGalleryCardsMarkup(galleryItems);
