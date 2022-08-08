@@ -2,40 +2,47 @@ import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 const galleryContainer = document.querySelector(".gallery");
-const cardsMarkup = createGalleryCardsMarkup(galleryItems);
 
-galleryContainer.insertAdjacentHTML("beforeend", cardsMarkup);
-
-galleryContainer.addEventListener("click", onGalleryContainerClick);
-
-function createGalleryCardsMarkup(galleryItems) {
-  return galleryItemss
-    .map(({ preview, original, description }) => {
-      return `
-    <a class="gallery__item" 
-        href="${original}"onclick="return false;">
-        <img class="gallery__image" 
-        src="${preview}" 
-        alt="${description}" />
+function createGalleryCardsMarkup(items) {
+  return items
+    .map(
+      (item) =>
+        `
+    <a class="gallery__item" href="${item.original}">
+      <img class="gallery__image"
+      src="${item.preview}"
+      alt="${item.description}" />
     </a>
-  `;
-    })
+  `
+    )
     .join("");
 }
 
-function onGalleryContainerClick(evt) {
-  basicLightbox
-    .create(
-      `
-    <img src="${galleryItems.original}">
-`
-    )
-    .show();
+const addGallaryMarkup = createGalleryCardsMarkup(galleryItems);
 
-  if (!evt.target.classList.contains("gallery__item")) {
+galleryContainer.innerHTML = addGallaryMarkup;
+
+galleryContainer.addEventListener("click", onImageClick);
+
+function onImageClick(evt) {
+  blockStandartAction(evt);
+
+  if (evt.target.nodeName !== "IMG") {
     return;
   }
 
-  console.log(evt.target);
-  // modalTemplate();
+  galleryContainer.addEventListener("keydown", (evt) => {
+    if (evt.code === "Escape") {
+      instance.close();
+    }
+  });
+
+  // Да, столько действий в одной фунции плохо.
 }
+
+function blockStandartAction(evt) {
+  evt.preventDefault();
+}
+
+let gallery = new SimpleLightbox(".gallery a");
+gallery.on("show.simplelightbox", function () {});

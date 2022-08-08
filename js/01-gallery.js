@@ -1,54 +1,56 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-// const modalTemplate = (img) =>
-//   `
-//   <div class="modal">
-//     <img src=${img}>
-//     </div>
-//   `;
 
 const galleryContainer = document.querySelector(".gallery");
-const cardsMarkup = createGalleryCardsMarkup(galleryItems);
 
-galleryContainer.insertAdjacentHTML("beforeend", cardsMarkup);
-
-galleryContainer.addEventListener("click", onGalleryContainerClick);
-
-function createGalleryCardsMarkup(galleryItems) {
-  return galleryItems
-    .map(({ preview, original, description }) => {
-      return `
+function createGalleryCardsMarkup(items) {
+  return items
+    .map(
+      (item) =>
+        `
     <div class="gallery__item">
-      <a class="gallery__link" href="${original}" onclick="return false;">
+      <a class="gallery__link" href="${item.original}">
       <img
         class="gallery__image"
-        src="${preview}"
-        data-source="${original}"
-        alt="${description}"
+        src="${item.preview}"
+        data-source="${item.original}"
+        alt="${item.description}"
       />
       </a>
     </div>
-  `;
-    })
+  `
+    )
     .join("");
 }
 
-function onGalleryContainerClick(evt) {
-  basicLightbox
-    .create(
-      `
-    <img src="${galleryItems.original}">
-`
-    )
-    .show();
+const addGallaryMarkup = createGalleryCardsMarkup(galleryItems);
 
-  if (!evt.target.classList.contains("gallery__item")) {
+galleryContainer.innerHTML = addGallaryMarkup;
+
+galleryContainer.addEventListener("click", onImageClick);
+
+function onImageClick(evt) {
+  blockStandartAction(evt);
+
+  if (evt.target.nodeName !== "IMG") {
     return;
   }
+  const instance = basicLightbox.create(
+    `<img src="${evt.target.dataset.source}"/>`
+  ).show();
 
-  console.log(evt.target);
-  // modalTemplate();
+  galleryContainer.addEventListener("keydown", (evt) => {
+    if (evt.code === "Escape") {
+      instance.close();
+    }
+  });
+
+  // Да, столько действий в одной фунции плохо.
+
 }
 
-// const instance = basicLightbox.create(document.querySelector(".modal")).show();
+function blockStandartAction(evt) {
+  evt.preventDefault();
+}
+
