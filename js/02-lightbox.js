@@ -30,19 +30,10 @@ function onImageClick(evt) {
   if (evt.target.nodeName !== "IMG") {
     return;
   }
-
-  galleryContainer.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape") {
-      instance.close();
-    }
-  });
-
-  // Да, столько действий в одной фунции плохо.
-}
-
-function blockStandartAction(evt) {
-  evt.preventDefault();
 }
 
 let gallery = new SimpleLightbox(".gallery a");
 gallery.on("show.simplelightbox", function () {});
+gallery.on("captionDelay", function () {});
+
+// Не доходит, как вносить параметры captionDelay? 🥺🥺🥺

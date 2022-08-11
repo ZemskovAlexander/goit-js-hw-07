@@ -30,27 +30,32 @@ galleryContainer.innerHTML = addGallaryMarkup;
 
 galleryContainer.addEventListener("click", onImageClick);
 
+const instance = basicLightbox
+  .create(`<img class="modal-img" src=""/>`, {
+    onShow: instance => {
+      window.addEventListener('keydown', onEscClick);
+    },
+
+    onClose: instance => {
+      window.removeEventListener('keydown', onEscClick);
+    },
+  });
+
 function onImageClick(evt) {
-  blockStandartAction(evt);
+   evt.preventDefault();
 
   if (evt.target.nodeName !== "IMG") {
     return;
   }
-  const instance = basicLightbox.create(
-    `<img src="${evt.target.dataset.source}"/>`
-  ).show();
+  instance.element().querySelector('img').src = evt.target.dataset.source;
 
-  galleryContainer.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape") {
-      instance.close();
-    }
-  });
-
-  // Да, столько действий в одной фунции плохо.
-
+  instance.show();
 }
 
-function blockStandartAction(evt) {
-  evt.preventDefault();
+function onEscClick(evt) {
+  if (evt.key === "Escape") {
+    instance.close();
+    return;
+  }
 }
 
